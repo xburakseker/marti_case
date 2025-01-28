@@ -16,13 +16,13 @@ final class LocationTrackingVm extends BaseViewModel {
   StreamSubscription<Position>? positionStream;
   bool isTracking = false;
 
-  LocationTrackingVm(BuildContext context) {
-    _init(context);
+  LocationTrackingVm(BuildContext context, Function(String address) markerOnTap) {
+    _init(context, markerOnTap);
   }
 
-  Future<void> _init(BuildContext context) async {
+  Future<void> _init(BuildContext context, Function(String address) markerOnTap) async {
     locationBox = await Hive.openBox('locationBox');
-    await _loadMarkers();
+    await _loadMarkers(markerOnTap);
     try {
       await PermissionHandler.checkPermissions();
     } catch (e) {
@@ -30,13 +30,16 @@ final class LocationTrackingVm extends BaseViewModel {
     }
   }
 
-  Future<void> _loadMarkers() async {
+  Future<void> _loadMarkers(Function(String address) markerOnTap) async {
     final storedMarkers = locationBox?.get('markers') ?? [];
     markers = storedMarkers.map<Marker>((markerData) {
       return Marker(
         markerId: MarkerId(markerData['id']),
         position: LatLng(markerData['lat'], markerData['lng']),
         infoWindow: InfoWindow(title: markerData['address'], snippet: markerData['snippet']),
+        onTap: () {
+          markerOnTap(markerData['snippet']);
+        },
       );
     }).toSet();
     notifyListeners();
@@ -54,7 +57,7 @@ final class LocationTrackingVm extends BaseViewModel {
     await locationBox?.put('markers', storedMarkers);
   }
 
-  Future<Marker> _createMarker(Position position) async {
+  Future<Marker> _createMarker(Position position, Function(String address) markerOnTap) async {
     final address = await getAddress(LatLng(position.latitude, position.longitude));
     return Marker(
       markerId: MarkerId(
@@ -62,6 +65,9 @@ final class LocationTrackingVm extends BaseViewModel {
       ),
       position: LatLng(position.latitude, position.longitude),
       infoWindow: InfoWindow(title: 'Address', snippet: address),
+      onTap: () {
+        markerOnTap(address);
+      },
     );
   }
 
@@ -78,7 +84,7 @@ final class LocationTrackingVm extends BaseViewModel {
     }
   }
 
-  void startTracking(Function(String e) dialog) async {
+  void startTracking(Function(String e) dialog, Function(String address) markerOnTap) async {
     try {
       await PermissionHandler.checkPermissions();
       isTracking = true;
@@ -94,7 +100,7 @@ final class LocationTrackingVm extends BaseViewModel {
         if (distance >= 100) {
           currentPosition = position;
           _updateCameraPosition(position);
-          final marker = await _createMarker(position);
+          final marker = await _createMarker(position, markerOnTap);
           markers.add(marker);
           await _saveMarker(marker);
           notifyListeners();
