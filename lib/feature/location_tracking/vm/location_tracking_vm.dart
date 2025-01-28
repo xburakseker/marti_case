@@ -74,7 +74,6 @@ final class LocationTrackingVm extends BaseViewModel {
           '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
       return address;
     } catch (e) {
-      print(e);
       return 'Adres bulunamadı';
     }
   }
