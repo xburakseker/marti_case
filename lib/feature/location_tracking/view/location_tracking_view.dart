@@ -12,7 +12,8 @@ final class LocationTrackingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LocationTrackingVm>.reactive(
-      viewModelBuilder: () => LocationTrackingVm(context),
+      viewModelBuilder: () =>
+          LocationTrackingVm(context, (address) => context.showMarkerLocation(address)),
       builder: (context, model, child) => Scaffold(
         floatingActionButton: Container(
           width: double.infinity,
@@ -24,7 +25,8 @@ final class LocationTrackingView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () => model.isTracking
                     ? model.stopTracking()
-                    : model.startTracking((e) => context.showPermissionError(e)),
+                    : model.startTracking((e) => context.showPermissionError(e),
+                        (position) => context.showMarkerLocation(position.toString())),
                 child: Text(model.isTracking ? 'Stop' : 'Start'),
               ),
               ElevatedButton(
