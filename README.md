@@ -1,16 +1,14 @@
-# marti_case
+iOS
 
-A new Flutter project.
 
-## Getting Started
+https://github.com/user-attachments/assets/cdbe3de0-7dd3-4522-938f-dfb2c2b33b65
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+Android
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
+https://github.com/user-attachments/assets/b61afe2a-dafa-43e2-a0f7-3ff19c59d1c8
+
