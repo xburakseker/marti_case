@@ -24,7 +24,7 @@ final class LocationTrackingView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () => model.isTracking
                     ? model.stopTracking()
-                    : model.startTracking((address) => context.showMarkerLocation(address)),
+                    : model.startTracking((e) => context.showPermissionError(e)),
                 child: Text(model.isTracking ? 'Stop' : 'Start'),
               ),
               ElevatedButton(

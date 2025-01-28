@@ -61,7 +61,7 @@ final class LocationTrackingVm extends BaseViewModel {
         DateTime.now().millisecondsSinceEpoch.toString(),
       ),
       position: LatLng(position.latitude, position.longitude),
-      infoWindow: InfoWindow(title: 'Konum', snippet: address),
+      infoWindow: InfoWindow(title: 'Address', snippet: address),
     );
   }
 
@@ -74,7 +74,7 @@ final class LocationTrackingVm extends BaseViewModel {
           '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
       return address;
     } catch (e) {
-      return 'Adres bulunamadı';
+      return 'Location not found';
     }
   }
 
